@@ -1,60 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coelho Ultra-Realista</title>
-<style>
-  body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#f5f5f5; }
-  #coelho-container { width:400px; height:400px; position:relative; overflow:hidden; }
-  #coelho { 
-    position:absolute; top:50%; left:50%; width:250px; 
-    transform: translate(-50%, -50%) rotate(0deg); 
-    transition: transform 0.05s ease-out;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+  <title>Coelho Interativo Final</title>
+  <style>
+    body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#f5f5f5; }
+    #coelho-container { width:400px; height:400px; position:relative; overflow:hidden; }
+    #coelho {
+      position:absolute; top:50%; left:50%; width:250px;
+      transform: translate(-50%, -50%) rotate(0deg);
+      transition: transform 0.05s ease-out;
+    }
+  </style>
 </head>
 <body>
-<div id="coelho-container">
-  <img id="coelho" src="https://i.postimg.cc/0y2QZqfL/coelho.png" alt="Coelho Ultra-Realista"/>
-</div>
+  <div id="coelho-container">
+    <img id="coelho" src="https://i.postimg.cc/0y2QZqfL/coelho.png" alt="Coelho Interativo Final"/>
+  </div>
 
-<script>
-const container = document.getElementById('coelho-container');
-const coelho = document.getElementById('coelho');
+  <script>
+    const container = document.getElementById('coelho-container');
+    const coelho = document.getElementById('coelho');
 
-let mouseX=0, mouseY=0, currentX=0, currentY=0, rotate=0, currentRotate=0;
+    let mouseX =0, mouseY=0, currentX=0, currentY=0, rotate=0, currentRotate=0;
 
-container.addEventListener('mousemove', e=>{
-  const rect = container.getBoundingClientRect();
-  let relX = (e.clientX - rect.left - rect.width/2);
-  let relY = (e.clientY - rect.top - rect.height/2);
+    container.addEventListener('mousemove', e => {
+      const rect = container.getBoundingClientRect();
+      let relX = (e.clientX - rect.left - rect.width/2);
+      let relY = (e.clientY - rect.top - rect.height/2);
+      mouseX = relX / 12;
+      mouseY = relY / 20;
+      rotate = mouseX * 2;
+    });
 
-  mouseX = relX / 12;
-  mouseY = relY / 20;
-  rotate = mouseX * 2;
+    container.addEventListener('mouseleave', () => {
+      mouseX=0; mouseY=0; rotate=0;
+    });
 
-  let offsetX = mouseX / 10;
-  let offsetY = mouseY / 12;
-  coelho.style.transform = `translate(calc(-50% + ${currentX + offsetX}px), calc(-50% + ${currentY + offsetY}px)) rotate(${currentRotate}deg)`;
-});
+    function animate(){
+      currentX += (mouseX - currentX)*0.1;
+      currentY += (mouseY - currentY)*0.1;
+      currentRotate += (rotate - currentRotate)*0.1;
+      const earWobble = Math.sin(Date.now()/120)*3;
 
-container.addEventListener('mouseleave', ()=>{
-  mouseX=0; mouseY=0; rotate=0;
-});
+      coelho.style.transform = `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px)) rotate(${currentRotate + earWobble}deg)`;
 
-function animate(){
-  currentX += (mouseX - currentX)*0.1;
-  currentY += (mouseY - currentY)*0.1;
-  currentRotate += (rotate - currentRotate)*0.1;
+      requestAnimationFrame(animate);
+    }
 
-  const earWobble = Math.sin(Date.now()/120)*3;
-  coelho.style.transform = `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px)) rotate(${currentRotate + earWobble}deg)`;
-
-  requestAnimationFrame(animate);
-}
-
-animate();
-</script>
+    animate();
+  </script>
 </body>
 </html>
